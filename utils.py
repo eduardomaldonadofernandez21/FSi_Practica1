@@ -1,7 +1,7 @@
 
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
-
+import math
 infinity = 1.0e400
 
 
@@ -561,6 +561,34 @@ class Ram_Queue(Queue):
     def extend(self, items):
         self.A.extend(items)
         self.A.sort(key=lambda Node: Node.path_cost)
+
+
+    def pop(self):
+        e = self.A[self.start]
+        self.start += 1
+        if self.start > 5 and self.start > len(self.A) / 2:
+            self.A = self.A[self.start:]
+            self.start = 0
+        return e
+
+
+class H_Queue(Queue):
+    """A First-In-First-Out Queue."""
+
+    def __init__(self, problem):
+        self.A = []
+        self.start = 0
+        self.problem = problem
+
+    def append(self, item):
+        self.A.append(item)
+
+    def __len__(self):
+        return len(self.A) - self.start
+
+    def extend(self, items):
+        self.A.extend(items)
+        self.A.sort(key=lambda Node: Node.path_cost + self.problem.h(Node))
 
     def pop(self):
         e = self.A[self.start]

@@ -1,5 +1,4 @@
 """Search (Chapters 3-4)
-
 The way to use this code is to subclass Problem to create a class of problems,
 then create problem instances and solve them with calls to the various search
 functions."""
@@ -100,14 +99,20 @@ def graph_search(problem, fringe):
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
     fringe.append(Node(problem.initial))
+    count = 0
     while fringe:
         node = fringe.pop()
         if problem.goal_test(node.state):
+            count +=1
             print(node.path_cost)
+            print("Numero de saltos: ")
+            print(count)
             return node
         if node.state not in closed:
             closed[node.state] = True
             fringe.extend(node.expand(problem))
+            count +=1
+    print(count)
     return None
 
 
@@ -124,7 +129,8 @@ def ram_graph_search(problem):
     """"""
     return graph_search(problem, Ram_Queue())
 
-
+def heuristica_graph_search(problem):
+    return graph_search(problem, H_Queue(problem))
 
 # _____________________________________________________________________________
 # The remainder of this file implements examples for the search algorithms.
